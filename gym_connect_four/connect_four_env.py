@@ -1,3 +1,8 @@
+###
+# From https://github.com/IASIAI/gym-connect-four/blob/fbb504596ff868acaf909b29b4f52f0cb0dd6e1e/gym_connect_four/envs/connect_four_env.py
+# Written by Andrei Suiu, Vlad Adomnicai, and Valentin-Bogdan Rosca
+###
+
 import random
 from abc import ABC, abstractmethod
 from collections import deque
@@ -103,6 +108,7 @@ class ResultType(Enum):
 	DRAW = 0
 	WIN1 = 1
 	WIN2 = -1
+	# WIN2 = 0
 
 	def __eq__(self, other):
 		"""
@@ -136,6 +142,7 @@ class ConnectFourEnv(gym.Env):
 
 	metadata = {'render.modes': ['human']}
 
+	# LOSS_REWARD = -1
 	LOSS_REWARD = -1
 	DEF_REWARD = 0
 	DRAW_REWARD = 0.5
@@ -226,7 +233,6 @@ class ConnectFourEnv(gym.Env):
 
 	def _step(self, action: int) -> StepResult:
 		result = ResultType.NONE
-		print(action)
 
 		if not self.is_valid_action(action):
 			raise Exception(
@@ -246,6 +252,7 @@ class ConnectFourEnv(gym.Env):
 			# Check win condition
 			if self.is_win_state():
 				result = ResultType.WIN1 if self.__current_player == 1 else ResultType.WIN2
+				# print("Result: ", result)
 		return self.StepResult(result)
 
 	@property

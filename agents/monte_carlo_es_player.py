@@ -7,7 +7,7 @@ from statistics import mean
 
 class MonteCarloESPlayer(Player):
 
-	def __init__(self, env: 'ConnectFourEnv', name='SemiGradientSarsaPlayer', alpha=0.01, epsilon=0.1, discount=0.99):
+	def __init__(self, env: 'ConnectFourEnv', name='SemiGradientSarsaPlayer', alpha=0.05, epsilon=0.1, discount=0.99):
 		super().__init__(env, name)
 		self.alpha = alpha
 		self.epsilon = epsilon
@@ -57,8 +57,9 @@ class MonteCarloESPlayer(Player):
 				if st not in self.states[:index - 1]:
 					self.returns[(st, at)].append(g)
 					self.qvals[(st, at)] = mean(self.returns[(st, at)])
+				index -= 1
 		else:
-			self.states.append(state)
+			self.states.append(tuple(map(tuple, state.tolist())))
 			self.actions.append(action)
 			self.rewards.append(reward)
 
@@ -78,7 +79,9 @@ class MonteCarloESPlayer(Player):
 		"""
 		# self.weights = np.zeros(len(self.features))
 		# We don't want to do anything here because we want the player to learn
+		# print("NEW!!!")
 		self.states = []
 		self.actions = []
 		self.rewards = []
+		self.starting_move = True
 		pass

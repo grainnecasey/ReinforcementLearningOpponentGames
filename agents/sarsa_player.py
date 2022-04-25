@@ -1,44 +1,16 @@
 from gym_connect_four.connect_four_env import Player
 import random
 import numpy as np
+from agents.features import ADJACENT_FEATURES
 
 
 def tab_aggregation(s):
 	return s
 
 
-def column_player_features(col, player):
-	def F(state, action):
-		val = 0
-		for index in list(reversed(range(state.shape[0]))):
-			if state[index][col] == 0:
-				if index > 0:
-					if state[index-1][col] == player:
-						val = 1
-				if col > 0:
-					if state[index][col-1] == player:
-						val = 1
-				if col < state.shape[1] - 1:
-					if state[index][col+1] == player:
-						val = 1
-		return val
-	return F
-
-
-def create_features(cols: int):
-	features = []
-	for col in range(cols):
-		features.append(column_player_features(col, 1))
-		features.append(column_player_features(col, -1))
-	return features
-
-
-FEATURES = create_features(7)
-
-
 class SemiGradientSarsaPlayer(Player):
 
-	def __init__(self, env: 'ConnectFourEnv', name='SemiGradientSarsaPlayer', alpha=0.01, epsilon=0.1, discount=0.99, features=FEATURES):
+	def __init__(self, env: 'ConnectFourEnv', name='SemiGradientSarsaPlayer', alpha=0.01, epsilon=0.1, discount=0.99, features=ADJACENT_FEATURES):
 		super().__init__(env, name)
 		self.alpha = alpha
 		self.epsilon = epsilon

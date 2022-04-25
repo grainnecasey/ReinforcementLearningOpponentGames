@@ -1,3 +1,8 @@
+###
+# From https://github.com/IASIAI/gym-connect-four/blob/fbb504596ff868acaf909b29b4f52f0cb0dd6e1e/gym_connect_four/envs/render.py
+# Written by Valentin-Bogdan Rosca
+###
+
 import gym
 import numpy as np
 from PIL import Image, ImageDraw
